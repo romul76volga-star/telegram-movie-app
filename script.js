@@ -8,7 +8,7 @@ let currentWord = "";
 let score = 0;
 let timeLeft = 60;
 let timerId = null;
-let charIndex = 0; // Какую букву сейчас печатаем
+let charIndex = 0;
 
 const startBtn = document.getElementById('start-btn');
 const startScreen = document.getElementById('start-screen');
@@ -16,14 +16,12 @@ const gameScreen = document.getElementById('game-screen');
 const wordContainer = document.getElementById('word-input-container');
 const hiddenInput = document.getElementById('hidden-input');
 const timerDisplay = document.getElementById('timer');
-const scoreDisplay = document.getElementById('score-counter');
 
 function startGame() {
     startScreen.classList.add('hidden');
     gameScreen.classList.remove('hidden');
     score = 0;
     timeLeft = 60;
-    updateScore();
     nextWord();
 
     hiddenInput.focus();
@@ -41,7 +39,6 @@ function nextWord() {
     currentWord = (timeLeft > 30) 
         ? simpleWords[Math.floor(Math.random() * simpleWords.length)]
         : hardPhrases[Math.floor(Math.random() * hardPhrases.length)];
-    
     renderWord();
 }
 
@@ -49,7 +46,7 @@ function renderWord() {
     wordContainer.innerHTML = '';
     [...currentWord].forEach((char, i) => {
         const span = document.createElement('span');
-        span.innerText = char;
+        span.innerText = char === " " ? "\u00A0" : char; // Обработка пробела
         span.classList.add('char');
         if (i === 0) span.classList.add('current');
         wordContainer.appendChild(span);
@@ -60,30 +57,26 @@ function renderWord() {
 hiddenInput.addEventListener('input', () => {
     const spans = wordContainer.querySelectorAll('.char');
     const typed = hiddenInput.value;
-    const lastChar = typed[typed.length - 1];
+    if (!typed) return;
+    
+    const lastChar = typed[typed.length - 1].toLowerCase();
+    const targetChar = currentWord[charIndex].toLowerCase();
 
-    if (!lastChar) return;
-
-    if (lastChar.toLowerCase() === currentWord[charIndex].toLowerCase()) {
-        // ПРАВИЛЬНО
+    if (lastChar === targetChar) {
         spans[charIndex].classList.remove('current', 'wrong');
         spans[charIndex].classList.add('correct');
         charIndex++;
         
         if (charIndex === currentWord.length) {
             score++;
-            updateScore();
-            setTimeout(nextWord, 100);
+            setTimeout(nextWord, 50);
         } else {
             spans[charIndex].classList.add('current');
         }
     } else {
-        // ОШИБКА
         spans[charIndex].classList.add('wrong');
         if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
     }
-    
-    // Всегда очищаем инпут, чтобы ловить только одно нажатие
     hiddenInput.value = '';
 });
 
@@ -91,17 +84,13 @@ function updateTimer() {
     timerDisplay.innerText = `00:${timeLeft < 10 ? '0' + timeLeft : timeLeft}`;
 }
 
-function updateScore() {
-    scoreDisplay.innerText = `Очки: ${score}`;
-}
-
 function endGame() {
     clearInterval(timerId);
-    tg.showAlert(`Финиш! Очки: ${score}`);
+    tg.showAlert(`Игра окончена! Вы набрали ${score} очков.`);
     gameScreen.classList.add('hidden');
     startScreen.classList.remove('hidden');
+    timerDisplay.style.color = "white";
 }
 
 startBtn.addEventListener('click', startGame);
-// Поддержка клика по экрану для фокуса клавиатуры
 gameScreen.addEventListener('click', () => hiddenInput.focus());
