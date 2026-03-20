@@ -2,15 +2,17 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Typing Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Speed Typing TMA</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <input type="text" id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
     <div id="start-screen" class="screen">
         <div class="content-wrapper">
-            <button id="start-btn">начать</button>
+            <button id="start-btn" class="glass-button">начать</button>
         </div>
     </div>
 
@@ -18,10 +20,10 @@
         <div id="timer">01:00</div>
         
         <div class="game-center">
-            <div id="word-to-type">слово</div>
-            <input type="text" id="input-field" placeholder="поле ввода" autocomplete="off">
+            <div id="word-input-container" class="glass-input"></div>
+            <div id="score-counter">Очки: 0</div>
         </div>
-        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
