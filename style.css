@@ -2,9 +2,9 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Красим абсолютно всё в один цвет, чтобы не было разрывов */
 html, body, .screen {
     background-color: #d1d1d1;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -18,36 +18,38 @@ html, body, .screen {
 
 .hidden { display: none !important; }
 
-/* Кнопка старта */
-.content-wrapper {
-    flex: 1;
-    display: flex;
-    align-items: center;
+/* ЭФФЕКТ СТЕКЛА */
+.glass-button, .glass-input {
+    background: rgba(255, 255, 255, 0.2); 
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
 }
+
+.content-wrapper { flex: 1; display: flex; align-items: center; }
 
 #start-btn {
-    background-color: #a1a1a1;
-    color: white;
-    border: none;
-    padding: 20px 60px;
-    border-radius: 50px;
+    padding: 20px 70px;
     font-size: 32px;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-/* Таймер сверху */
-#timer {
-    font-size: 64px;
-    font-weight: bold;
+    font-weight: 800;
     color: white;
-    margin-top: 40px;
+    transition: transform 0.1s;
 }
 
-/* Игровое поле: теперь оно занимает 50% высоты, 
-   чтобы клавиатура снизу его не достала */
+#start-btn:active { transform: scale(0.95); }
+
+#timer {
+    font-size: 72px;
+    font-weight: 900;
+    color: white;
+    margin-top: 50px;
+    transition: color 0.3s;
+}
+
 .game-center {
-    height: 50vh; 
+    height: 50vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,22 +57,51 @@ html, body, .screen {
     width: 100%;
 }
 
-#word-to-type {
-    font-size: 36px;
-    font-weight: bold;
-    color: #7a7a7a;
-    margin-bottom: 20px;
+/* КОНТЕЙНЕР ДЛЯ БУКВ */
+.glass-input {
+    width: 90%;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    min-height: 100px;
 }
 
-#input-field {
-    width: 80%;
-    padding: 15px;
-    border-radius: 25px;
-    border: none;
-    background-color: #a1a1a1;
+.char {
+    font-size: 36px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    border-bottom: 3px solid transparent;
+}
+
+.char.current {
     color: white;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    outline: none;
+    border-bottom-color: rgba(255, 255, 255, 0.8);
+}
+
+.char.correct { color: #4cd964; } /* Зеленый iOS */
+
+.char.wrong {
+    color: #ff3b30; /* Красный iOS */
+    animation: shake 0.2s ease-in-out;
+}
+
+#score-counter {
+    margin-top: 15px;
+    color: white;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+#hidden-input {
+    position: absolute;
+    top: -100px;
+    opacity: 0;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
