@@ -5,10 +5,12 @@
     padding: 0;
 }
 
-body {
-    background-color: #1a1a1a;
+/* Красим самый нижний слой (фон за пределами приложения) */
+html, body {
+    background-color: #d1d1d1; /* Теперь везде один цвет */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     height: 100vh;
+    width: 100vw;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -44,6 +46,11 @@ body {
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.1s;
+}
+
+#start-btn:active {
+    transform: scale(0.95); /* Эффект нажатия */
 }
 
 /* Элементы игры */
@@ -59,8 +66,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Поднимаем поле ввода выше */
-    padding-top: 60px; /* Отступ сверху */
+    justify-content: flex-start; 
+    padding-top: 60px; 
     width: 100%;
 }
 
@@ -83,15 +90,16 @@ body {
     font-weight: bold;
     text-align: center;
     outline: none;
+    -webkit-appearance: none; /* Убирает системные тени на iOS */
 }
 
 #input-field::placeholder {
     color: #cccccc;
 }
 
-/* Прозрачный блок-разделитель (место под клаву) */
+/* Невидимый блок-заглушка (сливается с фоном) */
 #keyboard-stub {
     width: 100%;
-    height: 250px; /* Занимает нижнюю часть экрана */
-    background-color: transparent; /* УБРАЛИ ТЁМНЫЙ КВАДРАТ */
+    height: 300px; 
+    background-color: #d1d1d1; /* Идеально сливается */
 }
