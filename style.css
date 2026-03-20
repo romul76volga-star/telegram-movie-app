@@ -10,17 +10,16 @@ body, html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: -apple-system, sans-serif;
 }
 
-/* Каждый экран перекрывает весь телефон */
 .screen {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #d1d1d1; /* Серый фон для всех экранов */
+    width: 100vw;
+    height: 100vh;
+    background-color: #d1d1d1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,9 +29,9 @@ body, html {
 
 .hidden { display: none !important; }
 
-/* КНОПКА НАЧАТЬ */
+/* КНОПКА СТАРТА */
 .glass-button {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
@@ -41,87 +40,37 @@ body, html {
     font-weight: 800;
     color: white;
     border-radius: 40px;
+    cursor: pointer;
+    outline: none;
 }
 
-/* ЭКРАН ИГРЫ */
-#timer {
-    font-size: 72px;
-    font-weight: 900;
-    color: white;
-    margin-bottom: 40px;
-}
-
+/* ИГРОВОЕ ПОЛЕ */
+#timer { font-size: 72px; font-weight: 900; color: white; margin-bottom: 30px; }
 .glass-input {
     background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     width: 90vw;
     min-height: 100px;
     border-radius: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
 }
 
-.char {
-    font-size: clamp(22px, 8vw, 38px);
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.4);
-}
-.char.current { color: white; border-bottom: 3px solid white; }
-.char.correct { color: #4cd964; }
-.char.wrong { color: #ff3b30; animation: shake 0.2s; }
-
-/* ЭКРАН ИТОГА (СТРОГО ПО МАКЕТУ) */
-#end-title {
-    font-size: 80px;
-    font-weight: 900;
-    color: white;
-    margin-bottom: 30px;
-}
-
+/* ФИНАЛЬНЫЙ ЭКРАН */
+#end-title { font-size: 80px; font-weight: 900; color: white; margin-bottom: 20px; }
 .stat-card {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    width: 300px;
+    background: rgba(255, 255, 255, 0.2);
+    width: 280px;
     height: 280px;
     border-radius: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 45px; /* Выравнивание текста влево */
-    margin-bottom: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding-left: 40px;
+    margin-bottom: 30px;
 }
+.stat-line { font-size: 34px; font-weight: 800; color: white; margin: 5px 0; }
+.retry-icon { cursor: pointer; margin-bottom: 30px; }
+.share-text { color: white; opacity: 0.8; font-weight: 600; }
 
-.stat-line {
-    font-size: 34px;
-    font-weight: 800;
-    color: white;
-    margin: 10px 0;
-}
-
-/* БЕЛАЯ ИКОНКА */
-.retry-icon {
-    cursor: pointer;
-    transition: transform 0.2s;
-    margin-bottom: 40px;
-}
-.retry-icon:active { transform: scale(0.9) rotate(45deg); }
-
-.share-text {
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    opacity: 0.8;
-}
-
-#hidden-input { position: fixed; top: -100px; left: -100px; opacity: 0; }
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(5px); }
-}
+#hidden-input { position: absolute; opacity: 0; left: -999px; }
