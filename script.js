@@ -26,8 +26,11 @@ function startGame() {
     updateTimerDisplay();
     nextWord();
 
-    // Фокус на поле ввода для вызова клавиатуры смартфона
-    setTimeout(() => inputField.focus(), 100);
+    // Ждём 300 мс (время анимации развертывания TMA) и принудительно ставим фокус
+    setTimeout(() => {
+        inputField.focus(); // Кликаем по полю ввода программно
+        inputField.click(); // На всякий случай еще и клик
+    }, 300);
 
     // Таймер
     timerId = setInterval(() => {
@@ -71,4 +74,4 @@ inputField.addEventListener('input', () => {
 startBtn.addEventListener('click', startGame);
 
 // Сообщаем Telegram, что приложение готово
-tg.ready();
+tg.ready();;
