@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Speed Typing TMA</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css?v=50">
+    <link rel="stylesheet" href="style.css?v=100">
 </head>
 <body>
     <input type="text" id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 
     <div id="start-screen" class="screen">
         <div class="content-wrapper">
-            <button id="start-btn" class="glass-button">начать</button>
+            <button id="start-btn" class="glass-button start-main-btn">начать</button>
         </div>
     </div>
 
@@ -31,10 +31,13 @@
             <div class="stat-line">ошибок: <span id="final-errors">0</span></div>
         </div>
 
-        <div class="end-actions">
-            <button id="retry-btn" class="glass-button">еще раз</button>
-            <button id="share-btn" class="secondary-btn">поделиться</button>
+        <div id="retry-icon-btn" class="retry-action-wrapper">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18C8.69 18 6 15.31 6 12C6 10.34 6.67 8.84 7.76 7.76L6.34 6.34C4.9 7.78 4 9.79 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4Z" fill="white"/>
+            </svg>
         </div>
+
+        <button id="share-btn" class="secondary-btn">поделиться</button>
     </div>
 
     <script src="script.js"></script>
