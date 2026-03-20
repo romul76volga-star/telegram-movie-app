@@ -5,66 +5,68 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-body {
+body, html {
     background-color: #d1d1d1;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+/* Каждый экран перекрывает весь телефон */
 .screen {
-    width: 100vw;
-    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #d1d1d1; /* Серый фон для всех экранов */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #d1d1d1;
-    position: fixed;
-    top: 0;
-    left: 0;
+    z-index: 10;
 }
 
 .hidden { display: none !important; }
 
-/* СТЕКЛО */
-.glass-button, .glass-panel {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+/* КНОПКА НАЧАТЬ */
+.glass-button {
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border-radius: 35px;
-    color: white;
-}
-
-#start-btn {
     padding: 20px 80px;
     font-size: 32px;
     font-weight: 800;
-    border: none;
+    color: white;
+    border-radius: 40px;
 }
 
-/* ИГРА */
+/* ЭКРАН ИГРЫ */
 #timer {
-    font-size: 70px;
+    font-size: 72px;
     font-weight: 900;
     color: white;
-    position: absolute;
-    top: 10%;
+    margin-bottom: 40px;
 }
 
 .glass-input {
-    width: 90%;
-    min-height: 90px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    width: 90vw;
+    min-height: 100px;
+    border-radius: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
 }
 
 .char {
-    font-size: clamp(20px, 8vw, 36px);
+    font-size: clamp(22px, 8vw, 38px);
     font-weight: 700;
     color: rgba(255, 255, 255, 0.4);
 }
@@ -72,48 +74,52 @@ body {
 .char.correct { color: #4cd964; }
 .char.wrong { color: #ff3b30; animation: shake 0.2s; }
 
-/* ИТОГ (КАК НА МАКЕТЕ) */
+/* ЭКРАН ИТОГА (СТРОГО ПО МАКЕТУ) */
 #end-title {
     font-size: 80px;
     font-weight: 900;
     color: white;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .stat-card {
-    width: 280px;
-    height: 250px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    width: 300px;
+    height: 280px;
+    border-radius: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 40px;
-    margin-bottom: 30px;
+    padding-left: 45px; /* Выравнивание текста влево */
+    margin-bottom: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .stat-line {
-    font-size: 35px;
+    font-size: 34px;
     font-weight: 800;
     color: white;
-    margin: 5px 0;
+    margin: 10px 0;
 }
 
-/* БЕЛАЯ КНОПКА РЕПЛЕЯ */
-.retry-wrapper {
+/* БЕЛАЯ ИКОНКА */
+.retry-icon {
     cursor: pointer;
     transition: transform 0.2s;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
-.retry-wrapper:active { transform: rotate(90deg) scale(0.9); }
+.retry-icon:active { transform: scale(0.9) rotate(45deg); }
 
-.secondary-btn {
-    background: transparent;
-    border: none;
+.share-text {
     color: white;
     font-size: 18px;
-    opacity: 0.7;
+    font-weight: 600;
+    opacity: 0.8;
 }
 
-#hidden-input { position: absolute; opacity: 0; pointer-events: none; }
+#hidden-input { position: fixed; top: -100px; left: -100px; opacity: 0; }
 
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
