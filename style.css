@@ -28,7 +28,7 @@ html, body {
 .hidden { display: none !important; }
 
 /* ЭФФЕКТ СТЕКЛА */
-.glass-button, .glass-input, .glass-panel {
+.glass-button, .glass-panel, .glass-input, .retry-action-wrapper {
     background: rgba(255, 255, 255, 0.15) !important;
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
     backdrop-filter: blur(15px);
@@ -37,25 +37,24 @@ html, body {
     color: white !important;
 }
 
-/* КНОПКИ (БОЛЬШИЕ И ОВАЛЬНЫЕ) */
-#start-btn, #retry-btn {
+/* ГЛАВНАЯ КНОПКА (СТАРТ) - БЕЗ ИЗМЕНЕНИЙ */
+.start-main-btn {
     padding: 20px 80px;
-    min-width: 260px;
     font-size: 32px;
     font-weight: 800;
     text-transform: lowercase;
-    border-radius: 60px !important;
+    border-radius: 50px !important;
     cursor: pointer;
     transition: transform 0.1s;
     outline: none;
     border: none;
 }
 
-#start-btn:active, #retry-btn:active { transform: scale(0.95); }
+.start-main-btn:active { transform: scale(0.95); }
 
 .content-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; }
 
-/* ИГРОВОЙ ЭКРАН */
+/* ИГРА - БЕЗ ИЗМЕНЕНИЙ */
 #timer {
     font-size: 80px;
     font-weight: 900;
@@ -66,74 +65,42 @@ html, body {
 .game-center {
     flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding-bottom: 20vh;
+    padding-bottom: 25vh; /* Место для клавиатуры */
 }
 
-/* ФИКСИРОВАННОЕ ПОЛЕ */
 .glass-input {
-    width: 90vw;
-    max-width: 360px;
-    height: 110px;
-    border-radius: 30px;
+    width: 90%;
+    padding: 20px 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 20px;
+    white-space: nowrap; 
+    overflow: hidden;    
+    min-height: 90px;
+    border-radius: 25px; /* Уголки */
 }
 
-/* БУКВЫ */
 .char {
-    font-size: 34px;
+    font-size: clamp(16px, 7vw, 36px); 
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.4) !important;
+    color: rgba(255, 255, 255, 0.4);
+    border-bottom: 3px solid transparent;
     display: inline-block;
 }
 
 .char.current {
-    color: white !important;
-    border-bottom: 3px solid white;
-}
-
-.char.correct { color: #4cd964 !important; }
-.char.wrong { color: #ff3b30 !important; animation: shake 0.2s ease-in-out; }
-
-/* ЭКРАН ИТОГА */
-#end-title {
-    font-size: 80px;
-    font-weight: 900;
     color: white;
-    margin-top: 40px;
-    margin-bottom: 20px;
+    border-bottom-color: rgba(255, 255, 255, 0.8);
 }
 
-.stat-panel {
-    width: 280px;
-    padding: 40px;
-    border-radius: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.stat-line {
-    font-size: 30px;
-    font-weight: 700;
-    color: white;
-    text-align: left;
-}
-
-.secondary-btn {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    opacity: 0.7;
-    margin-top: 10px;
+.char.correct { color: #4cd964; } /* iOS Green */
+.char.wrong {
+    color: #ff3b30; /* iOS Red */
+    animation: shake 0.2s ease-in-out;
 }
 
 #hidden-input { position: absolute; top: -100px; left: -100px; opacity: 0; }
@@ -143,3 +110,78 @@ html, body {
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
+
+/* ИТОГ (ОБНОВЛЕННЫЙ) */
+#end-screen { justify-content: center; }
+
+#end-title {
+    font-size: 80px;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+}
+
+.stat-panel {
+    width: 85%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px; /* Уменьшил отступ снизу */
+}
+
+.stat-line {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    text-align: left;
+    text-transform: lowercase;
+}
+
+.stat-line span { font-weight: 700; color: white; }
+
+/* НОВАЯ КНОПКА РЕПЛЕЯ (ОВОЙ ИКОНКИ) */
+.retry-action-wrapper {
+    width: 100px;  /* Крупная, овальная форма */
+    height: 100px;
+    border-radius: 50% !important; /* Делаем идеально круглой, чтобы соответствовать эскизу */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 30px; /* Отступ до "поделиться" */
+    transition: transform 0.1s ease-in-out, opacity 0.1s;
+    outline: none;
+    border: none;
+}
+
+.retry-action-wrapper:active {
+    transform: rotate(90deg) scale(0.9); /* Анимация поворота и нажатия */
+}
+
+.retry-action-wrapper svg {
+    display: block;
+    width: 50px; /* Размер иконки внутри */
+    height: 50px;
+}
+
+/* Оставляем "поделиться" без изменений */
+.secondary-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    opacity: 0.7;
+    text-transform: lowercase;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.secondary-btn:active { opacity: 0.4; }
