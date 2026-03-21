@@ -23,6 +23,7 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 10; /* Базовый слой для экранов */
 }
 
 .hidden { display: none !important; }
@@ -37,7 +38,27 @@ html, body {
     color: white !important;
 }
 
-/* ГЛАВНАЯ КНОПКА (СТАРТ) - БЕЗ ИЗМЕНЕНИЙ */
+/* --- СТАРТОВЫЙ ЭКРАН И МЕНЮ (Новое!) --- */
+.menu-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 20; /* Поверх стартового экрана */
+    transition: opacity 0.2s;
+}
+
+.menu-btn:active { opacity: 0.5; }
+
+.menu-btn img {
+    width: 100%;
+    height: 100%;
+    /* Делаем иконку белой, если исходный SVG черный */
+    filter: invert(1) brightness(2); 
+}
+
 .start-main-btn {
     padding: 20px 80px;
     font-size: 32px;
@@ -54,7 +75,85 @@ html, body {
 
 .content-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; }
 
-/* ИГРА - БЕЗ ИЗМЕНЕНИЙ */
+/* --- БОКОВАЯ ПАНЕЛЬ НАСТРОЕК (Новое!) --- */
+.settings-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3); /* Полупрозрачный фон сзади */
+    z-index: 100; /* Поверх всего */
+    transition: opacity 0.3s ease;
+}
+
+/* Сама стеклянная панель */
+.settings-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%; /* Занимает половину экрана */
+    height: 100%;
+    border-radius: 0 30px 30px 0 !important; /* Уголки только справа */
+    border-left: none !important;
+    padding: 60px 20px; /* Отступ сверху для иконки глобуса */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+    /* Усиленный Apple style blur */
+    backdrop-filter: blur(25px) brightness(1.1);
+    -webkit-backdrop-filter: blur(25px) brightness(1.1);
+    
+    transition: transform 0.3s ease;
+    transform: translateX(-100%); /* Изначально спрятана слева */
+}
+
+/* Когда панель активна, она выезжает */
+.settings-panel:not(.hidden) .settings-content {
+    transform: translateX(0);
+}
+
+/* Скрытое состояние (анимация прозрачности) */
+.settings-panel.hidden {
+    opacity: 0;
+    pointer-events: none; /* Не кликабельна */
+}
+
+/* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ (Новое!) */
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+}
+
+.globe-icon {
+    width: 30px;
+    height: 30px;
+    filter: invert(1) brightness(2); /* Делаем белой */
+    margin-right: 5px;
+}
+
+.lang-opt {
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.lang-opt.active {
+    opacity: 1;
+    font-weight: 800;
+}
+
+.lang-divider {
+    opacity: 0.3;
+    font-weight: 300;
+}
+
+/* --- ОСТАЛЬНЫЕ СТИЛИ (БЕЗ ИЗМЕНЕНИЙ) --- */
 #timer {
     font-size: 80px;
     font-weight: 900;
@@ -69,7 +168,7 @@ html, body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding-bottom: 25vh; /* Место для клавиатуры */
+    padding-bottom: 25vh;
 }
 
 .glass-input {
@@ -81,7 +180,7 @@ html, body {
     white-space: nowrap; 
     overflow: hidden;    
     min-height: 90px;
-    border-radius: 25px; /* Уголки */
+    border-radius: 25px;
 }
 
 .char {
@@ -97,9 +196,9 @@ html, body {
     border-bottom-color: rgba(255, 255, 255, 0.8);
 }
 
-.char.correct { color: #4cd964; } /* iOS Green */
+.char.correct { color: #4cd964; }
 .char.wrong {
-    color: #ff3b30; /* iOS Red */
+    color: #ff3b30;
     animation: shake 0.2s ease-in-out;
 }
 
@@ -111,7 +210,6 @@ html, body {
     75% { transform: translateX(5px); }
 }
 
-/* ИТОГ (ОБНОВЛЕННЫЙ) */
 #end-screen { justify-content: center; }
 
 #end-title {
@@ -131,7 +229,7 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 25px; /* Уменьшил отступ снизу */
+    margin-bottom: 25px;
 }
 
 .stat-line {
@@ -139,37 +237,34 @@ html, body {
     font-weight: 700;
     color: white;
     text-align: left;
-    text-transform: lowercase;
 }
 
 .stat-line span { font-weight: 700; color: white; }
 
-/* НОВАЯ КНОПКА РЕПЛЕЯ (ОВОЙ ИКОНКИ) */
 .retry-action-wrapper {
-    width: 100px;  /* Крупная, овальная форма */
+    width: 100px;
     height: 100px;
-    border-radius: 50% !important; /* Делаем идеально круглой, чтобы соответствовать эскизу */
+    border-radius: 50% !important;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    margin-bottom: 30px; /* Отступ до "поделиться" */
+    margin-bottom: 30px;
     transition: transform 0.1s ease-in-out, opacity 0.1s;
     outline: none;
     border: none;
 }
 
 .retry-action-wrapper:active {
-    transform: rotate(90deg) scale(0.9); /* Анимация поворота и нажатия */
+    transform: rotate(90deg) scale(0.9);
 }
 
 .retry-action-wrapper svg {
     display: block;
-    width: 50px; /* Размер иконки внутри */
+    width: 50px;
     height: 50px;
 }
 
-/* Оставляем "поделиться" без изменений */
 .secondary-btn {
     background: transparent;
     border: none;
@@ -178,7 +273,6 @@ html, body {
     font-size: 18px;
     font-weight: 600;
     opacity: 0.7;
-    text-transform: lowercase;
     cursor: pointer;
     padding: 10px;
     border-radius: 20px;
