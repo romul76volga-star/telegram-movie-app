@@ -19,17 +19,20 @@
                 <span id="lang-en" class="lang-opt">en</span>
             </div>
             <div id="open-leaderboard" class="menu-item-link">
-                <img src="crown.png" alt="👑" width="22">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V18H19V19Z"/></svg>
                 <span>лидеры</span>
             </div>
         </div>
     </div>
 
-    <div id="leaderboard-screen" class="screen hidden">
-        <div class="leaderboard-header">лидеры</div>
-        <div id="leaderboard-list" class="leaderboard-container">
+    <div id="leaderboard-screen" class="screen hidden glass-leader-bg">
+        <div class="leader-top-bar">
+            <div id="close-leaderboard" class="back-arrow">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             </div>
-        <button id="close-leaderboard" class="secondary-btn">назад</button>
+            <div class="leader-header-title">лидеры</div>
+        </div>
+        <div id="leaderboard-list" class="leaderboard-container"></div>
     </div>
 
     <div id="start-screen" class="screen">
@@ -53,6 +56,7 @@
         <div class="glass-panel stat-panel">
             <div class="stat-line"><span id="label-words">слов</span>: <span id="final-score">0</span></div>
             <div class="stat-line"><span id="label-errors">ошибок</span>: <span id="final-errors">0</span></div>
+            <div id="percent-label" class="stat-percent">лучше чем 0% игроков</div>
         </div>
         <div id="retry-icon-btn" class="retry-action-wrapper">
             <svg width="60" height="60" viewBox="0 0 24 24" fill="white"><path d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18C8.69 18 6 15.31 6 12C6 10.34 6.67 8.84 7.76 7.76L6.34 6.34C4.9 7.78 4 9.79 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4Z"/></svg>
