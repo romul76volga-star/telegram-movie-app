@@ -4,13 +4,13 @@ tg.expand();
 const locales = {
     ru: {
         startBtn: "начать", endTitle: "итог", labelWords: "слов", labelErrors: "ошибок", shareBtn: "поделиться",
-        shareText: "Мой результат: {score} слов и {errors} ошибок!",
+        betterThan: "Ты лучше, чем {n}% игроков!",
         simpleWords: ["яблоко", "солнце", "машина", "космос", "кнопка", "экран", "время", "город", "ручка", "кошка"],
         hardPhrases: ["быстрый бег", "синее небо", "яркий свет", "умный бот", "белый снег", "свежий чай"]
     },
     en: {
         startBtn: "start", endTitle: "result", labelWords: "words", labelErrors: "errors", shareBtn: "share",
-        shareText: "My result: {score} words and {errors} errors!",
+        betterThan: "Better than {n}% of players!",
         simpleWords: ["apple", "sun", "car", "space", "button", "screen", "time", "city", "pen", "cat"],
         hardPhrases: ["fast run", "blue sky", "bright light", "smart bot", "white snow", "fresh tea"]
     }
@@ -19,8 +19,9 @@ const locales = {
 let currentLang = 'ru', currentWord = "", score = 0, errorsCount = 0, timeLeft = 60, timerId = null, charIndex = 0;
 
 // Элементы
-const sStart = document.getElementById('start-screen'), sGame = document.getElementById('game-screen'), sEnd = document.getElementById('end-screen'), sSet = document.getElementById('settings-panel');
+const sStart = document.getElementById('start-screen'), sGame = document.getElementById('game-screen'), sEnd = document.getElementById('end-screen'), sSet = document.getElementById('settings-panel'), sLeader = document.getElementById('leaderboard-screen');
 const bStart = document.getElementById('start-btn'), bMenu = document.getElementById('menu-btn'), bRetry = document.getElementById('retry-icon-btn'), bShare = document.getElementById('share-btn');
+const bOpenLeader = document.getElementById('open-leaderboard'), bCloseLeader = document.getElementById('close-leaderboard');
 const lRu = document.getElementById('lang-ru'), lEn = document.getElementById('lang-en');
 const wordBox = document.getElementById('word-input-container'), input = document.getElementById('hidden-input'), timerBox = document.getElementById('timer');
 
@@ -36,11 +37,48 @@ function updateLang(lang) {
     lEn.classList.toggle('active', lang === 'en');
 }
 
+// ЛИДЕРБОРД ЛОГИКА
+function saveScore(newScore) {
+    let leaders = JSON.parse(localStorage.getItem('typing_leaders')) || [
+        {name: "CyberSpeed", score: 52}, {name: "Alex", score: 45}, {name: "TypingMaster", score: 38}
+    ];
+    const userName = tg.initDataUnsafe?.user?.first_name || "Игрок";
+    
+    // Добавляем текущий результат
+    leaders.push({name: userName, score: newScore});
+    leaders.sort((a, b) => b.score - a.score);
+    leaders = leaders.slice(0, 10); // Оставляем ТОП-10
+    localStorage.setItem('typing_leaders', JSON.stringify(leaders));
+}
+
+function showLeaderboard() {
+    const list = document.getElementById('leaderboard-list');
+    list.innerHTML = '';
+    const leaders = JSON.parse(localStorage.getItem('typing_leaders')) || [];
+    
+    leaders.forEach((p, i) => {
+        const isLong = p.name.length > 10;
+        const row = document.createElement('div');
+        row.className = 'leader-row';
+        row.innerHTML = `
+            <div class="leader-rank">${i+1}</div>
+            <div class="leader-badge">
+                <div class="name-wrapper">
+                    <span class="leader-name ${isLong ? 'marquee' : ''}">${p.name}${isLong ? ' &nbsp;&nbsp;&nbsp; ' + p.name : ''}</span>
+                </div>
+                <div class="leader-score">${p.score}</div>
+            </div>
+        `;
+        list.appendChild(row);
+    });
+    sSet.classList.add('hidden');
+    sLeader.classList.remove('hidden');
+}
+
 function startGame() {
     sStart.classList.add('hidden'); sEnd.classList.add('hidden'); sSet.classList.add('hidden'); sGame.classList.remove('hidden');
     score = 0; errorsCount = 0; timeLeft = 60; timerBox.style.color = "white";
-    nextWord();
-    input.focus();
+    nextWord(); input.focus();
     if (timerId) clearInterval(timerId);
     timerId = setInterval(() => {
         timeLeft--; updateTimer();
@@ -76,21 +114,30 @@ input.addEventListener('input', () => {
     input.value = '';
 });
 
-function updateTimer() { const s = timeLeft < 10 ? '0' + timeLeft : timeLeft; timerBox.innerText = `00:${s}`; }
-
 function endGame() {
     clearInterval(timerId); input.blur();
+    saveScore(score);
+    
+    // Процент (насколько лучше)
+    const p = Math.min(99, Math.max(1, Math.floor((score / 50) * 100)));
+    document.getElementById('percent-rank').innerText = locales[currentLang].betterThan.replace('{n}', p);
+    
     document.getElementById('final-score').innerText = score;
     document.getElementById('final-errors').innerText = errorsCount;
     sGame.classList.add('hidden'); sEnd.classList.remove('hidden');
 }
 
+function updateTimer() { const s = timeLeft < 10 ? '0' + timeLeft : timeLeft; timerBox.innerText = `00:${s}`; }
+
 bStart.onclick = startGame;
 bRetry.onclick = startGame;
 bMenu.onclick = () => sSet.classList.remove('hidden');
 sSet.onclick = (e) => { if (e.target === sSet) sSet.classList.add('hidden'); };
+bOpenLeader.onclick = showLeaderboard;
+bCloseLeader.onclick = () => sLeader.classList.add('hidden');
 lRu.onclick = () => updateLang('ru');
 lEn.onclick = () => updateLang('en');
 sGame.onclick = () => input.focus();
+
 updateLang('ru');
 tg.ready();
