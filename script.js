@@ -6,15 +6,22 @@ const locales = {
         startBtn: "начать", endTitle: "итог", labelWords: "слов", labelErrors: "ошибок", shareBtn: "поделиться",
         percentText: "ЛУЧШЕ ЧЕМ {n}% ИГРОКОВ",
         motivation: "ТВОЙ ПРЕДЕЛ — ЭТО ТОЛЬКО ТВОЕ ВООБРАЖЕНИЕ. ДАВИ НА ГАЗ!",
-        hardWords: ["синхрофазотрон", "превысокомногорассматривающий", "субстанция", "архитектура", "параллелепипед", "изъявление", "конъюнктура", "интерпретация"],
-        phrases: ["быстрый бурый лис", "съешь этих булок", "цифровой барьер", "взрывной характер", "желтый кронштейн"]
+        // Смешанный список: простые + средней сложности (до 12-13 символов, чтобы влезли)
+        words: [
+            "яблоко", "солнце", "машина", "космос", "время", "субстанция", 
+            "экран", "поток", "код", "логика", "изъявление", "проверка", 
+            "шторм", "рывок", "память", "конъюнктура", "смысл", "объект", 
+            "интерфейс", "запрос", "схватка", "архитектор", "финал", "старт"
+        ],
+        // Короткие фразы для финала
+        phrases: ["быстрый лис", "синий код", "яркий свет", "твой рекорд", "жми на газ", "верный путь"]
     },
     en: { 
         startBtn: "start", endTitle: "result", labelWords: "words", labelErrors: "errors", shareBtn: "share",
         percentText: "BETTER THAN {n}% OF PLAYERS",
         motivation: "LIMITS EXIST ONLY IN THE MIND. KEEP PUSHING!",
-        hardWords: ["cryptography", "synchronization", "infrastructure", "juxtaposition", "phenomenon"],
-        phrases: ["quick brown fox", "heavy metal thunder", "digital frontier", "space exploration"]
+        words: ["apple", "sun", "space", "time", "logic", "interface", "phenomenon", "stream", "object", "dynamic", "pointer", "structure"],
+        phrases: ["quick fox", "blue code", "bright light", "top score", "keep going", "fast lane"]
     }
 };
 
@@ -22,10 +29,9 @@ let currentLang = 'ru', score = 0, errorsCount = 0, timeLeft = 60, timerId = nul
 
 const sStart = document.getElementById('start-screen'), sGame = document.getElementById('game-screen'), 
       sEnd = document.getElementById('end-screen'), sSet = document.getElementById('settings-panel'),
-      sLeader = document.getElementById('leaderboard-screen');
-
-const bStart = document.getElementById('start-btn'), bRetry = document.getElementById('retry-icon-btn'),
-      input = document.getElementById('hidden-input'), wordBox = document.getElementById('word-input-container');
+      sLeader = document.getElementById('leaderboard-screen'), bStart = document.getElementById('start-btn'),
+      bRetry = document.getElementById('retry-icon-btn'), input = document.getElementById('hidden-input'), 
+      wordBox = document.getElementById('word-input-container');
 
 function startGame() {
     sStart.classList.add('hidden'); sEnd.classList.add('hidden'); sSet.classList.add('hidden'); sLeader.classList.add('hidden');
@@ -43,10 +49,12 @@ function startGame() {
 
 function nextWord() {
     const list = locales[currentLang];
-    // После 20 секунды - фразы, до этого - сложные слова
-    currentWord = (timeLeft <= 20) 
-        ? list.phrases[Math.floor(Math.random() * list.phrases.length)] 
-        : list.hardWords[Math.floor(Math.random() * list.hardWords.length)];
+    // Чередуем: последние 20 сек — короткие фразы, остальное время — слова
+    if (timeLeft <= 20) {
+        currentWord = list.phrases[Math.floor(Math.random() * list.phrases.length)];
+    } else {
+        currentWord = list.words[Math.floor(Math.random() * list.words.length)];
+    }
     
     charIndex = 0;
     wordBox.innerHTML = '';
@@ -74,7 +82,7 @@ function endGame() {
     let top = JSON.parse(localStorage.getItem('typing_top')) || [];
     top.push({ name: tg.initDataUnsafe?.user?.first_name || "Игрок", score: score });
     top.sort((a, b) => b.score - a.score);
-    localStorage.setItem('typing_top', JSON.stringify(top.slice(0, 3))); // Только ТОП-3
+    localStorage.setItem('typing_top', JSON.stringify(top.slice(0, 3)));
 }
 
 function showLeaderboard() {
@@ -93,7 +101,6 @@ function showLeaderboard() {
     sLeader.classList.remove('hidden');
 }
 
-// Навигация
 document.getElementById('open-leaderboard').onclick = showLeaderboard;
 document.getElementById('close-leaderboard').onclick = () => { sLeader.classList.add('hidden'); sStart.classList.remove('hidden'); };
 bStart.onclick = startGame;
