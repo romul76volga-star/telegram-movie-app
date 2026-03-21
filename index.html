@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Speed Typing TMA</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css?v=130">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <input type="text" id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
@@ -13,27 +13,29 @@
     <div id="settings-panel" class="settings-panel hidden">
         <div class="settings-content glass-panel">
             <div class="lang-switcher">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                </svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 <span id="lang-ru" class="lang-opt active">ru</span>
                 <span class="lang-divider">|</span>
                 <span id="lang-en" class="lang-opt">en</span>
             </div>
+            <div id="open-leaderboard" class="menu-item-link">
+                <img src="crown.png" alt="👑" width="24">
+                <span>лидеры</span>
+            </div>
         </div>
+    </div>
+
+    <div id="leaderboard-screen" class="screen hidden">
+        <div class="leaderboard-header">лидеры</div>
+        <div id="leaderboard-list" class="leaderboard-container">
+            </div>
+        <button id="close-leaderboard" class="secondary-btn">назад</button>
     </div>
 
     <div id="start-screen" class="screen">
         <div id="menu-btn" class="menu-btn">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="6" width="18" height="2.5" rx="1.25" fill="white"/>
-                <rect x="3" y="11" width="18" height="2.5" rx="1.25" fill="white"/>
-                <rect x="3" y="16" width="18" height="2.5" rx="1.25" fill="white"/>
-            </svg>
+            <svg width="40" height="40" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="2" fill="white"/><rect x="3" y="11" width="18" height="2" fill="white"/><rect x="3" y="16" width="18" height="2" fill="white"/></svg>
         </div>
-        
         <div class="content-wrapper">
             <button id="start-btn" class="glass-button start-main-btn">начать</button>
         </div>
@@ -48,18 +50,14 @@
 
     <div id="end-screen" class="screen hidden">
         <div id="end-title">итог</div>
-        
         <div class="glass-panel stat-panel">
             <div class="stat-line"><span id="label-words">слов</span>: <span id="final-score">0</span></div>
             <div class="stat-line"><span id="label-errors">ошибок</span>: <span id="final-errors">0</span></div>
+            <div id="percent-rank" class="percent-label"></div>
         </div>
-
         <div id="retry-icon-btn" class="retry-action-wrapper">
-            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18C8.69 18 6 15.31 6 12C6 10.34 6.67 8.84 7.76 7.76L6.34 6.34C4.9 7.78 4 9.79 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4Z" fill="white"/>
-            </svg>
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="white"><path d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18C8.69 18 6 15.31 6 12C6 10.34 6.67 8.84 7.76 7.76L6.34 6.34C4.9 7.78 4 9.79 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4Z"/></svg>
         </div>
-
         <button id="share-btn" class="secondary-btn">поделиться</button>
     </div>
 
